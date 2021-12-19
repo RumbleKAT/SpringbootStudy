@@ -50,4 +50,21 @@ class MemoRepositoryTest {
         System.out.println("=======================================");
         System.out.println(memo);
     }
+
+    @Test
+    public void testUpdate(){
+        Memo memo = Memo.builder().mno(100L).memoText("Update Text").build();
+        System.out.println(memoRepository.save(memo));
+        /*
+        * JPA는 에닡티 객체들을 메모리상에 보관하려고 하기에, 특정 엔티티가 존재하는지 확인하는 select가 먼저 실행되고 해당 @ID가 있는 엔티티가 있으면 update, 없으면 Insert를 한다.
+        *
+        * */
+    }
+
+    @Test
+    public void testDelete(){
+        Long mno = 100L;
+        memoRepository.deleteById(mno);
+    }
+
 }
