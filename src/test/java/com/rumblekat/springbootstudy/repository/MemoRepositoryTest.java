@@ -4,6 +4,10 @@ import com.rumblekat.springbootstudy.entity.Memo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -67,4 +71,33 @@ class MemoRepositoryTest {
         memoRepository.deleteById(mno);
     }
 
+    @Test
+    public void testPageDefault(){
+        Pageable pageable = PageRequest.of(0,10);
+        Page<Memo> result = memoRepository.findAll(pageable);
+        System.out.println(result);
+        /*
+        * Page 타입의 경우, 단순 해당 목록만 가져오는 것이 아닌, 실제 페이지 처리에 필요한 전체 데이터의 개수를 가져오는 쿼리 역시 같이 처리
+        *
+        * */
+        System.out.println("--------------------------------------");
+        System.out.println("Total Pages : " + result.getTotalPages());
+        System.out.println("Total Count : " + result.getTotalElements());
+        System.out.println("Page Number : " + result.getNumber());
+        System.out.println("Page Size : " + result.getNumber());
+        System.out.println("has next Page ? : " + result.hasNext());
+        System.out.println("First Page ? : " + result.isFirst());
+    }
+
+    @Test
+    public void testSort(){
+        Sort sort1 = Sort.by("mno").descending();
+        Sort sort2 = Sort.by("memoText").ascending();
+        Sort sortAll = sort1.and(sort2);
+        Pageable pageable = PageRequest.of(0,10, sortAll);
+        Page<Memo> result = memoRepository.findAll(pageable);
+        result.get().forEach(memo -> {
+            System.out.println(memo);
+        });
+    }
 }
