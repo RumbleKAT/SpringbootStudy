@@ -131,4 +131,10 @@ class MemoRepositoryTest {
         * --> 실제로 잘 사용되지 않는데, row 단위로 삭제하기 때문.. => @Query를 이용하여 비효율적인 부분을 개선한다.
         * */
     }
+
+    @Test
+    public void updateQueryBinding(){
+        Memo memo = Memo.builder().mno(99L).memoText("hello world").build();
+        memoRepository.updateMemoText(memo);
+    }
 }
