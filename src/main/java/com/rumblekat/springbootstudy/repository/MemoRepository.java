@@ -1,6 +1,6 @@
 package com.rumblekat.springbootstudy.repository;
 
-import com.rumblekat.springbootstudy.entity.Memo;
+import com.rumblekat.springbootstudy.guestbook.entity.Memo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
