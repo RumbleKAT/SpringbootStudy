@@ -1,6 +1,6 @@
 package com.rumblekat.springbootstudy.repository;
 
-import com.rumblekat.springbootstudy.entity.Memo;
+import com.rumblekat.springbootstudy.guestbook.entity.Memo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +14,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemoRepositoryTest {

@@ -1,4 +1,4 @@
-package com.rumblekat.springbootstudy.entity;
+package com.rumblekat.springbootstudy.guestbook.entity;
 
 import lombok.*;
 
