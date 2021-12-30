@@ -2,8 +2,12 @@ package com.rumblekat.springbootstudy.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.rumblekat.springbootstudy.dto.GuestbookDTO;
+import com.rumblekat.springbootstudy.dto.PageRequestDTO;
+import com.rumblekat.springbootstudy.dto.PageResultDTO;
 import com.rumblekat.springbootstudy.guestbook.entity.Guestbook;
 import com.rumblekat.springbootstudy.guestbook.entity.QGuestbook;
+import com.rumblekat.springbootstudy.service.GuestbookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +23,9 @@ import java.util.stream.IntStream;
 public class GuestbookRepositoryTest {
     @Autowired
     private GuestbookRepository guestbookRepository;
+
+    @Autowired
+    private GuestbookService service;
 
     @Test
     public void insertDummies(){
@@ -103,4 +110,31 @@ public class GuestbookRepositoryTest {
     * DTO를 사용하는 경우, 가장 큰 단점은 Entity와 유사한 코드를 중복을 개발, 엔티티 객체를 DTO로 변환하거나 객체 변환의 과정이 필요.
     * */
 
+    @Test
+    public void testSearch(){
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .type("tc")
+                .keyword("한글")
+                .build();
+         //http://localhost:8080/guestbook/list?page=1&type=t&keyword=11
+         //TODO : 검색 속도를 더 높일 수 있는 방안? -> redis 적용
+         /*
+            TODO: ALTER TABLE table CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci
+             -> SQL Like문 수행시, UTF8 형식으로 저장되어 있지 않아서 데이터 컨버전 진행
+         */
+
+        PageResultDTO<GuestbookDTO, Guestbook> resultDTO = service.getList(pageRequestDTO);
+        System.out.println("PREV : " + resultDTO.isPrev());
+        System.out.println("NEXT : " + resultDTO.isNext());
+        System.out.println("TOTAL : " + resultDTO.getTotalPage());
+
+        System.out.println("--------------------------------------------------");
+        for(GuestbookDTO guestbookDTO : resultDTO.getDtoList()){
+            System.out.println(guestbookDTO);
+        }
+        System.out.println("==================================================");
+        resultDTO.getPageList().forEach(i -> System.out.println(i));
+    }
 }
