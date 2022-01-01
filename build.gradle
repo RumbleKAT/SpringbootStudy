@@ -28,6 +28,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'mysql:mysql-connector-java' //mysql 사용시 커넥터 추가
+//    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-java8time'
 }
 
 test {
