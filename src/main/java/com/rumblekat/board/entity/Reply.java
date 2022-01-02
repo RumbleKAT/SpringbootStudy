@@ -20,7 +20,7 @@ public class Reply {
 
     private String replyer;
 
-    //TODO: Board와 연관관계
+    //TODO: Board와 연관관계 board의 writer까지 가져오면 모두 left outer join으로 가져오게된다.
     @ManyToOne
     private Board board;
 }
