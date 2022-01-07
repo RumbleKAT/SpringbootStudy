@@ -12,6 +12,12 @@ public interface BoardService {
 
     PageResultDTO<BoardDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
 
+    BoardDTO get(Long bno);
+
+    void removeWithReplies(Long bno); //댓글까지 삭제기능
+
+    void modify(BoardDTO boardDTO);
+
     default Board dtoToEntity(BoardDTO dto){
         Member member = Member.builder().email(dto.getWriterEmail())
                 .build();
