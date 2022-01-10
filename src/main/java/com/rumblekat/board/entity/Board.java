@@ -24,7 +24,7 @@ public class Board extends BaseEntity{
     private String content;
 
     //작성자는 아직 처리하지 않는다.
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Member writer; //연관관계
     /*
     * JPA는 FK쪽을 먼저 해석한다. board와 member읜 관계는 N:1(다대일)
