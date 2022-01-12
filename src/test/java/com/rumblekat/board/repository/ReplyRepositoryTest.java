@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -42,5 +43,11 @@ class ReplyRepositoryTest {
         System.out.println(reply.getBoard());
 
         //left outer Join이 두번 들어간다.
+    }
+
+    @Test
+    public void testListByBoard(){
+        List<Reply> replyList = replyRepository.getRepliesByBoardOrderByRno(Board.builder().gno(99L).build());
+        replyList.forEach(reply -> System.out.println(reply));
     }
 }
