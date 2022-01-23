@@ -24,6 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/sample/all").permitAll()
                 .antMatchers("/sample/member").hasRole("USER");
         http.formLogin();
+        http.csrf().disable(); //rest 방식으로 이용할수 있도록 보안설정을 다루기 위해 csrf 토큰을 발행하지 않는다.
+        http.logout();
+        /*
+            csrf 토큰 방식을 사용하면, GET 방식으로도 처리 가능
+            POST 방식으로만 로그아웃을 해야됨
+            invalidatedHttpSession, deleteCookies 를 이용해서 쿠키나 세션을 무효화시키는 설정도 가능
+        */
     }
 
     @Override
