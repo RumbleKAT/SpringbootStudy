@@ -1,9 +1,13 @@
 package org.rumblekat.club.config;
 
 import lombok.extern.log4j.Log4j2;
+import org.rumblekat.club.security.handler.ClubLoginSuccessHandler;
+import org.rumblekat.club.security.service.ClubUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,7 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @Log4j2
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private ClubUserDetailsService userDetailsService;
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -20,12 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
-                .antMatchers("/sample/all").permitAll()
-                .antMatchers("/sample/member").hasRole("USER");
+//        http.authorizeRequests()
+//                .antMatchers("/sample/all").permitAll()
+//                .antMatchers("/sample/member").hasRole("USER");
         http.formLogin();
         http.csrf().disable(); //rest 방식으로 이용할수 있도록 보안설정을 다루기 위해 csrf 토큰을 발행하지 않는다.
         http.logout();
+        http.oauth2Login().successHandler(successHandler());
+        http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);//7일간 쿠키유지
         /*
             csrf 토큰 방식을 사용하면, GET 방식으로도 처리 가능
             POST 방식으로만 로그아웃을 해야됨
@@ -41,4 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .password(passwordEncoder().encode("1111"))
 //                .roles("USER");
 //    }
+    @Bean
+    public ClubLoginSuccessHandler successHandler(){
+        return new ClubLoginSuccessHandler(passwordEncoder());
+    }
 }
