@@ -54,5 +54,4 @@ public class ClubUserDetailsService implements UserDetailsService {
 * TODO: @RequiredArgsConstructor
 * 초기화 되지않은 final 필드나 @NonNull이 붙은 필드에 대해 생성자를 생성한다. -> 주로 의존성 주입 편의성을 위해 사용
 *
-*
 * */
